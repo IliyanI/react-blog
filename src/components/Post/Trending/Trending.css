@@ -1,0 +1,46 @@
+.trending-container {
+  position: sticky;
+  top: 50px;
+}
+.trending-post {
+  max-height: 145px;
+  min-height: 145px;
+  margin: 1.6rem 0;
+  border-radius: 3px;
+  display: grid;
+  grid-template-columns: 15% 85%;
+}
+
+.trending-post .trending-post-content {
+  border-left: 1px solid grey;
+  padding-left: 10px;
+}
+
+.trending-post .trending-index {
+  font-size: 3rem;
+  font-style: bold;
+  font-family: "Markazi Text";
+  margin: 0;
+}
+
+.trending-header {
+  font-size: 4rem;
+  font-weight: 600;
+  font-family: "Markazi Text";
+  margin: 20px 0 90px 0;
+  padding: 0;
+}
+
+.trending-posts {
+  max-height: 158px;
+}
+
+.trending-posts .trending-title {
+  margin: 0;
+  text-decoration: none;
+  color: black;
+}
+
+.trending-posts .trending-description {
+  text-decoration: none;
+}

@@ -1,0 +1,68 @@
+main {
+  font-size: 1.5rem;
+  margin: 30px;
+}
+.posts-section {
+  display: grid;
+  grid-template-columns: 65% 5% 30%;
+}
+.trending {
+  grid-column-start: 3;
+  grid-row-start: 1;
+  grid-row-end: 3;
+}
+.posts-wrapper {
+  grid-column-start: 1;
+}
+.posts-section .posts-header {
+  font-size: 4rem;
+  font-family: "Markazi Text";
+  margin: 20px 0;
+  padding: 0;
+}
+.posts-sort {
+  margin-bottom: 110px;
+  font-weight: 300;
+  font-size: 1rem;
+  display: grid;
+  grid-template-columns: 100px 100px 100px;
+  grid-template-rows: 50px;
+}
+.posts-sort ul {
+  font-size: 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  grid-column-start: 2;
+  grid-column-end: 4;
+}
+
+.posts-sort h2 {
+  float: left;
+  margin: 0;
+}
+
+.posts-sort ul li {
+  float: left;
+  margin: 0 0 0 15px;
+}
+
+.posts-sort ul li a {
+  padding: 10px 15px;
+  background-color: #c9c9c9;
+  color: rgb(255, 255, 255);
+  border-radius: 2px;
+}
+
+.posts-sort ul li a:hover {
+  animation: aHover 0.4s ease-out both;
+  cursor: pointer;
+}
+
+@keyframes aHover {
+  0% {
+  }
+  100% {
+    background-color: #212529;
+  }
+}

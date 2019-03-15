@@ -1,0 +1,82 @@
+@import url(https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css);
+
+.fa {
+  line-height: 30px;
+  font-size: 30px;
+  display: inline-bloxk;
+  width: 35px;
+  height: 35px;
+}
+.hidden {
+  display: none;
+}
+
+input[type="checkbox"] + label {
+  position: relative;
+}
+
+.pointer-cursor {
+  cursor: pointer;
+  cursor: hand;
+}
+.close {
+  float: right;
+  color: #b94b45;
+  cursor: pointer;
+  cursor: hand;
+}
+/* input[type="checkbox"]:checked + label {
+} */
+.alert-message {
+  background-color: #f2dede;
+  border: 1px solid rgba(#34495e, 0.25);
+  color: #b94b45;
+  border-radius: 3px;
+  line-height: 30px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  float: left;
+  display: block;
+  width: 100%;
+  padding: 12px;
+  box-sizing: border-box;
+  color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.6);
+}
+
+.disappear {
+  animation: closing 2s forwards ease-in-out, moving 2s forwards ease-in-out;
+}
+
+.alert-message.error {
+  background: #fd5f5f;
+}
+.alert-message.success {
+  background: #63f876;
+}
+.notification {
+  position: absolute;
+  width: 100%;
+}
+
+@keyframes closing {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes moving {
+  0%,
+  90% {
+    top: 0;
+    left: 0;
+  }
+  100% {
+    top: -100px;
+    left: 0;
+  }
+}

@@ -1,0 +1,120 @@
+.post-form {
+  width: 60%;
+  min-width: 271px;
+  margin: 100px auto;
+  font-size: 2rem;
+}
+
+.post-form form p {
+  margin: 0;
+  margin-top: 2rem;
+}
+
+/* input style */
+.inp {
+  position: relative;
+  margin: auto;
+  width: 100%;
+}
+.inp .label {
+  position: absolute;
+  top: 16px;
+  left: 0;
+  font-size: 16px;
+  color: #9098a9;
+  font-weight: 500;
+  transform-origin: 0 0;
+  transition: all 0.2s ease;
+}
+.inp .border {
+  position: absolute;
+  bottom: -15px;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  background: rgb(255, 244, 89);
+  transform: scaleX(0);
+  transform-origin: 0 0;
+  transition: all 0.25s ease;
+}
+.inp input,
+.inp textarea {
+  -webkit-appearance: none;
+  width: 100%;
+  border: 0;
+  font-family: "Markazi Text";
+  padding: 12px 0;
+  height: 48px;
+  font-size: 2.6rem;
+  font-weight: 500;
+  border-bottom: 2px solid #c8ccd4;
+  background: none;
+  border-radius: 0;
+  color: #223254;
+  transition: all 0.25s ease;
+}
+
+.inp textarea {
+  overflow: hidden;
+  min-width: 271px;
+  resize: none;
+}
+
+.inp.textarea .label {
+  top: -3px;
+}
+.inp.textarea .border {
+  top: 18px;
+}
+
+.inp input:hover,
+.inp textarea:hover {
+  background: rgba(34, 50, 84, 0.03);
+}
+.inp input:not(:placeholder-shown) + span,
+.inp textarea:not(:placeholder-shown) + span {
+  color: #5a667f;
+  transform: translateY(-26px) scale(0.75);
+}
+.inp input:focus,
+.inp textarea:focus {
+  background: none;
+  outline: none;
+}
+.inp input:focus + span {
+  color: rgb(255, 244, 89);
+  transform: translateY(-26px) scale(0.75);
+}
+.inp textarea:focus + span {
+  color: rgb(255, 244, 89);
+  transform: translateX(-46px) scale(0.95);
+}
+.inp input:focus + span + .border,
+.inp textarea:focus + span + .border {
+  transform: scaleX(1);
+}
+
+.make-post-button {
+  max-width: 271px;
+  min-width: 271px;
+  color: black;
+  padding: 15px 109px;
+  font-size: 2rem;
+  margin: 2rem auto;
+  background-color: rgb(255, 244, 89);
+  border: 2px solid rgb(255, 244, 89);
+}
+
+.make-post-button:hover {
+  cursor: pointer;
+  animation: submitButtonHover 0.4s ease-in both;
+}
+
+@keyframes submitButtonHover {
+  0% {
+    background-color: rgb(253, 244, 109);
+  }
+  100% {
+    background-color: rgb(255, 255, 255);
+  }
+}

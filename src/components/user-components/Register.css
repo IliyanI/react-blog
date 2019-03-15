@@ -1,0 +1,41 @@
+.register {
+  width: 301px;
+  min-width: 301px;
+  margin: 100px auto;
+  font-size: 2rem;
+}
+
+.register a {
+  color: rgb(0, 110, 255);
+}
+
+.register form p {
+  margin: 0;
+  margin-top: 2rem;
+}
+
+/* input style */
+
+.submit-button {
+  max-width: 301px;
+  color: black;
+  padding: 15px 113.26px;
+  font-size: 2rem;
+  margin: 2rem 0;
+  background-color: rgb(255, 244, 89);
+  border: 2px solid rgb(255, 244, 89);
+}
+
+.submit-button:hover {
+  cursor: pointer;
+  animation: submitButtonHover 0.4s ease-in both;
+}
+
+@keyframes submitButtonHover {
+  0% {
+    background-color: rgb(253, 244, 109);
+  }
+  100% {
+    background-color: rgb(255, 255, 255);
+  }
+}
