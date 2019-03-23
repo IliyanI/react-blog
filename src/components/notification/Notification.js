@@ -12,7 +12,6 @@ class Notification extends Component {
         <input type="checkbox" id="one" class="hidden" name="ossm" />
         <label for="one" class={"alert-message " + this.props.class}>
           {this.props.message}
-          <span class="close">×</span>
         </label>
       </div>
     );

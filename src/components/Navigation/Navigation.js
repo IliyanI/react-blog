@@ -1,12 +1,15 @@
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import ProfileIcon from "../user-components/ProfileIcon";
+import { connect } from "react-redux";
+import userActions from "../../redux/actions/userActions";
 
 class Navigation extends Component {
   handleLogout = () => {
-    sessionStorage.clear();
+    this.props.logoutUser();
   };
   render() {
+    const user = this.props.user;
     return (
       <div className="nav-wrapper">
         <nav id="navigation">
@@ -14,11 +17,7 @@ class Navigation extends Component {
             <li>
               <Link to="/">Feed</Link>
             </li>
-
-            {!(
-              sessionStorage.getItem("username") &&
-              sessionStorage.getItem("user_token")
-            ) ? (
+            {!user.authed ? (
               <Fragment>
                 <li>
                   <Link to="/register">Register</Link>
@@ -39,7 +38,7 @@ class Navigation extends Component {
                 </li>
                 <li>
                   <Link to="/user/profile" onClick={this.handleCllick}>
-                    {sessionStorage.getItem("username")}
+                    {user.userData.username}
                   </Link>
                 </li>
               </Fragment>
@@ -55,4 +54,16 @@ class Navigation extends Component {
   }
 }
 
-export default Navigation;
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return userActions(dispatch);
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Navigation);

@@ -1,36 +1,54 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 import Comment from "./Comment";
 import "./Comments.css";
-const COMMENT_CREATE_ENDPOINT = "http://localhost:5000/comment/create";
+import serverEndpoints from "../../helpers/serverEndpoints";
+import remote from "../../helpers/remote";
+const COMMENT_CREATE = serverEndpoints.COMMENT_CREATE;
+const POST_GET_COMMENTS = serverEndpoints.POST_GET_COMMENTS;
 
 class CommentArea extends Component {
+  state = {
+    comments: this.props.comments,
+    commentContent: ""
+  };
+
   handleTextArea = e => {
     e.target.style.height = e.target.scrollHeight + "px";
+    const value = e.target.value;
+
+    this.setState({ commentContent: value });
   };
 
   handleComment = e => {
     e.preventDefault();
+
     e.target.previousSibling.previousSibling.style.height = "48px";
     e.target.previousSibling.previousSibling.children[0].value = "";
+
     const data = {
       postId: this.props.postId,
       user: {
         username: sessionStorage.getItem("username"),
         id: sessionStorage.getItem("user_id")
       },
-      content: e.target.previousSibling.value
+      content: this.state.commentContent
     };
-    fetch(COMMENT_CREATE_ENDPOINT, {
-      method: "post",
-      headers: {
-        authorization: "bearer " + sessionStorage.getItem("user_token"),
-        "content-type": "application/json"
-      },
-      body: JSON.stringify(data)
-    });
+
+    remote
+      .post(COMMENT_CREATE, data)
+      .then(data => {
+        remote
+          .get(POST_GET_COMMENTS + this.props.postId)
+          .then(data => data.json())
+          .then(data => this.setState({ comments: data }));
+      })
+      .catch(err => console.log(err));
   };
   render() {
+    const { comments } = this.state;
+
     return (
       <div className="comment-section-wrapper">
         <div className="background" />
@@ -39,7 +57,8 @@ class CommentArea extends Component {
             <h3>Comments</h3>
             <div className="comment-textarea">
               <textarea
-                name="comment-textarea-content"
+                name="content"
+                className="comment-textarea-content"
                 onChange={this.handleTextArea}
               />
               <span class="label">Leave a respone here</span>
@@ -51,8 +70,7 @@ class CommentArea extends Component {
             </a>
           </div>
           <div className="comments">
-            {this.props.comments &&
-              this.props.comments.map(comment => <Comment {...comment} />)}
+            {comments && comments.map(comment => <Comment {...comment} />)}
           </div>
         </div>
       </div>

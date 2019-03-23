@@ -20,8 +20,8 @@
   padding: 15px 109px;
   font-size: 2rem;
   margin: 2rem 0;
-  background-color: rgb(255, 244, 89);
-  border: 2px solid rgb(255, 244, 89);
+  background-color: rgb(255, 208, 0);
+  border: 2px solid rgb(255, 208, 0);
 }
 
 .login-button:hover {
@@ -31,7 +31,7 @@
 
 @keyframes submitButtonHover {
   0% {
-    background-color: rgb(253, 244, 109);
+    background-color: rgb(255, 208, 0);
   }
   100% {
     background-color: rgb(255, 255, 255);

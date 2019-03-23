@@ -1,80 +1,161 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
-import remote from "../../helpers/remote";
 import { connect } from "react-redux";
 import "./Register.css";
 
 import notificationActions from "../../redux/actions/notificationActions";
-const REGISTER_ENDPOINT = "http://localhost:5000/auth/signup";
+import userActions from "../../redux/actions/userActions";
 
 class Register extends Component {
   state = {
-    redirect: false
+    redirect: false,
+    form: {},
+    validInput: null,
+    errorMessage: {}
   };
+
+  validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  }
+
+  validateInput = (name, value) => {
+    const { username, email, password, repeatPassword } = this.state.form;
+    const { errorMessage } = this.state;
+
+    if (name === "username") {
+      if (value.length >= 6) {
+        this.setState({ errorMessage: { ...errorMessage, username: "" } });
+      } else {
+        this.setState({
+          errorMessage: {
+            ...errorMessage,
+            username: "Username must be atleast 6 charecters long."
+          }
+        });
+      }
+    }
+    if (name === "email") {
+      if (this.validateEmail(value)) {
+        this.setState({ errorMessage: { ...errorMessage, email: "" } });
+      } else {
+        this.setState({
+          errorMessage: {
+            ...errorMessage,
+            email: "Invalid email."
+          }
+        });
+      }
+    }
+    if (name === "password") {
+      if (value.length >= 6) {
+        this.setState({ errorMessage: { ...errorMessage, password: "" } });
+        if (repeatPassword === value) {
+          this.setState({
+            errorMessage: { ...errorMessage, repeatPassword: "" }
+          });
+        }
+      } else {
+        this.setState({
+          errorMessage: {
+            ...errorMessage,
+            password: "Password must be atleast 6 charecters long."
+          }
+        });
+      }
+    }
+    if (name === "repeatPassword") {
+      if (password && value === password) {
+        this.setState({
+          errorMessage: { ...errorMessage, repeatPassword: "" }
+        });
+      } else {
+        this.setState({
+          errorMessage: {
+            ...errorMessage,
+            repeatPassword: "Passwords must match."
+          }
+        });
+      }
+    }
+  };
+
+  handleInput = e => {
+    const name = e.target.name;
+    const value = e.target.value;
+
+    let form = { ...this.state.form };
+    form[name] = value;
+    this.setState({ form: form });
+    this.validateInput(name, value);
+  };
+
+  validInput = () => {
+    if (Object.values(this.state.errorMessage).join("").length === 0) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  componentDidUpdate() {
+    const register = this.props.user.register;
+
+    if (register.success) {
+      this.setState({ redirect: true });
+    }
+  }
+
   handleRegister = event => {
     event.preventDefault();
-    const form = event.target.form;
-    let user = {
-      username: form[0].value,
-      email: form[1].value,
-      password: form[2].value,
-      repeatPassword: form[3].value
-    };
+    const userData = this.state.form;
 
-    remote
-      .post(REGISTER_ENDPOINT, user)
-      .then(data => this.props.notifySuccess("Signed up successfuly!"))
-      .catch(err => {
-        this.props.notifyError("Sign up failed try again.");
-        console.log(err);
-      });
-    this.setState({ redirect: true });
+    this.props.userActions.registerUser(userData);
   };
 
   render() {
+    const errorMessage = Object.values(this.state.errorMessage);
     if (this.state.redirect) {
       return <Redirect to="/" />;
     }
     return (
       <div className="register">
         <h1>Register</h1>
-        <form>
-          <label for="inp" class="inp">
-            <input type="text" name="username" placeholder="&nbsp;" />
-            <span class="label">Username</span>
-            <span class="border" />
+        <div className="register-errors">
+          {errorMessage.map(err => (
+            <p>{err}</p>
+          ))}
+        </div>
+        <form onChange={this.handleInput}>
+          <label forname="inp error" className="inp">
+            <input
+              type="text"
+              name="username"
+              placeholder="&nbsp;"
+              className="error"
+            />
+            <span className="label">Username</span>
+            <span className="border" />
           </label>
-          <label for="inp" class="inp">
+
+          <label forname="inp" className="inp">
             <input type="text" name="email" placeholder="&nbsp;" />
-            <span class="label">Email</span>
-            <span class="border" />
-          </label>
-          <label for="inp" class="inp">
-            <input type="text" name="password" placeholder="&nbsp;" />
-            <span class="label">Password</span>
-            <span class="border" />
-          </label>
-          <label for="inp" class="inp">
-            <input type="text" name="repeat-password" placeholder="&nbsp;" />
-            <span class="label">Repeat password</span>
-            <span class="border" />
+            <span className="label">Email</span>
+            <span className="border" />
           </label>
 
-          {/* <input type="text" name="username" placeholder="&nbsp;" />
+          <label forname="inp" className="inp">
+            <input type="password" name="password" placeholder="&nbsp;" />
+            <span className="label">Password</span>
+            <span className="border" />
+          </label>
 
-          <p>Email:</p>
+          <label forname="inp" className="inp">
+            <input type="password" name="repeatPassword" placeholder="&nbsp;" />
+            <span className="label">Repeat password</span>
+            <span className="border" />
+          </label>
 
-          <input type="text" name="email" placeholder="Your email" />
-          <p>Password:</p>
-
-          <input type="text" name="password" placeholder="Your password" />
-          <p>Repeat password:</p>
-
-          <input
-            type="text"
-            name="repeat-password"
-            placeholder="Repeat password"
-          /> */}
           <input
             className="submit-button"
             type="button"
@@ -90,19 +171,20 @@ class Register extends Component {
   }
 }
 
-/* if you need to add redux state
 const mapStateToProps = state => {
   return {
-    ...
+    user: state.user
   };
 };
-*/
 
 const mapDispatchToProps = dispatch => {
-  return notificationActions(dispatch);
+  return {
+    notificationActions: notificationActions(dispatch),
+    userActions: userActions(dispatch)
+  };
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Register);

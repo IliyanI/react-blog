@@ -21,9 +21,7 @@ body {
   margin: 0;
   padding: 0;
 }
-#root {
-  overflow: hidden;
-}
+
 .container {
   margin: 0 auto;
   width: 80%;
@@ -66,25 +64,24 @@ header:before {
 }
 header .container {
   /* never has to be greater than 100vh needs fix */
-  margin: 50% auto;
+  margin: 34vh auto;
 }
 
-.header-content {
+/* .header-content {
   position: absolute;
   top: 40%;
-  left: 35%;
-}
+} */
 
 header h1 {
   border-bottom: 2px solid #ffffff;
   border-top: 2px solid #ffffff;
   color: #ffffff;
-  font-family: "Amatic SC", cursive;
+  font-family: "Markazi Text", cursive;
   font-size: 8.75rem;
   margin: 0;
 }
 header h3 {
-  color: #fff0a5;
+  color: rgb(255, 255, 255);
   font-family: "Abril Fatface", cursive;
   font-size: 3.75rem;
   font-style: italic;
@@ -96,7 +93,6 @@ header h3 {
 .footer {
   width: 100%;
   margin: 0;
-  position: relative;
   bottom: 0;
   background-color: #212529;
   color: white;
@@ -105,9 +101,16 @@ header h3 {
   grid-template-columns: 50% 50%;
   font-size: 1.5rem;
   margin-top: 100px;
+  bottom: 0px;
 }
 .footer .icon {
   margin: auto 10px;
+  font-size: 2rem;
+}
+.footer .icon span {
+  color: rgb(255, 208, 0);
+  font-family: "Abril Fatface";
+  font-size: 3.5rem;
 }
 .footer a {
   color: white;
@@ -121,5 +124,5 @@ header h3 {
   grid-template-rows: 1.5rem;
 }
 .footer a:hover {
-  color: rgb(255, 244, 89);
+  color: rgb(255, 208, 0);
 }

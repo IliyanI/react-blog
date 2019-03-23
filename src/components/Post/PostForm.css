@@ -32,7 +32,7 @@
   left: 0;
   height: 2px;
   width: 100%;
-  background: rgb(255, 244, 89);
+  background: rgb(255, 208, 0);
   transform: scaleX(0);
   transform-origin: 0 0;
   transition: all 0.25s ease;
@@ -82,11 +82,11 @@
   outline: none;
 }
 .inp input:focus + span {
-  color: rgb(255, 244, 89);
+  color: rgb(255, 208, 0);
   transform: translateY(-26px) scale(0.75);
 }
 .inp textarea:focus + span {
-  color: rgb(255, 244, 89);
+  color: rgb(255, 208, 0);
   transform: translateX(-46px) scale(0.95);
 }
 .inp input:focus + span + .border,
@@ -101,8 +101,8 @@
   padding: 15px 109px;
   font-size: 2rem;
   margin: 2rem auto;
-  background-color: rgb(255, 244, 89);
-  border: 2px solid rgb(255, 244, 89);
+  background-color: rgb(255, 208, 0);
+  border: 2px solid rgb(255, 208, 0);
 }
 
 .make-post-button:hover {
@@ -112,7 +112,7 @@
 
 @keyframes submitButtonHover {
   0% {
-    background-color: rgb(253, 244, 109);
+    background-color: rgb(255, 208, 0);
   }
   100% {
     background-color: rgb(255, 255, 255);

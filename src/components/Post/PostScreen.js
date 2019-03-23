@@ -2,6 +2,8 @@ import React, { Component, Fragment } from "react";
 import CommentArea from "../user-components/CommentArea";
 import remote from "../../helpers/remote";
 import { Redirect, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import notificationActions from "../../redux/actions/notificationActions";
 import serverEndpoints from "../../helpers/serverEndpoints";
 import Loading from "../Loading";
 import "./PostScreen.css";
@@ -16,7 +18,6 @@ class PostScreen extends Component {
   };
 
   componentDidMount() {
-    this.setState({ loading: true });
     remote
       .get(serverEndpoints.POST_GET + this.props.match.params.id)
       .then(data => data.json())
@@ -26,9 +27,6 @@ class PostScreen extends Component {
           post: {
             ...data,
             content: decodeURI(data.content)
-              .split("\n")
-              .filter(string => string.length > 0)
-              .map(par => <p>{par}</p>)
           }
         });
       });
@@ -36,13 +34,23 @@ class PostScreen extends Component {
 
   handleLike = e => {
     e.preventDefault();
-    console.log(this.state.post._id);
+    const likes = this.state.post.likes + 1;
+    this.setState({ post: { ...this.state.post, likes: likes } });
     remote.post(serverEndpoints.POST_LIKE + this.state.post._id);
   };
 
   handleDelete = () => {
-    remote.delete(serverEndpoints.POST_DELETE + this.state.post._id);
-    this.setState({ redirect: true, route: "/" });
+    remote
+      .delete(serverEndpoints.POST_DELETE + this.state.post._id)
+      .then(data => data.json())
+      .then(data => {
+        if (data.success) {
+          this.props.notifySuccess(data.message);
+          this.setState({ redirect: true, route: "/" });
+        } else {
+          this.props.notifyError(data.message);  
+        }
+      });
   };
 
   handleEdit = () => {
@@ -73,6 +81,7 @@ class PostScreen extends Component {
       _id,
       comments
     } = this.state.post;
+
     const monthNames = [
       "Jan",
       "Feb",
@@ -122,16 +131,31 @@ class PostScreen extends Component {
             {dateCreated} &#8226; {readTime} min read.
           </p>
 
-          <div className="content">{content}</div>
+          <div
+            className="content"
+            dangerouslySetInnerHTML={{ __html: content }}
+          >
+            {/* {content && content.map(el => el)} */}
+          </div>
           <div className="like-button">
             <a href="#" onClick={this.handleLike}>
               &#x1f44d; {likes} likes.
             </a>
           </div>
         </div>
-        <CommentArea postId={_id} comments={comments} />
+        {title && <CommentArea comments={comments} postId={_id} />}
       </React.Fragment>
     );
   }
 }
-export default withRouter(PostScreen);
+
+const mapDispatchToProps = dispatch => {
+  return notificationActions(dispatch);
+};
+
+export default withRouter(
+  connect(
+    null,
+    mapDispatchToProps
+  )(PostScreen)
+);

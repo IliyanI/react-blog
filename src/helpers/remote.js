@@ -3,7 +3,7 @@ function makeRequest(url, method, body, options) {
     method: method,
     headers: {
       "content-type": "application/json",
-      authorization: "bearer " + sessionStorage.getItem("user_token")
+      authorization: "bearer " + sessionStorage.getItem("token")
     },
     body: JSON.stringify(body),
     ...options

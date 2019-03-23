@@ -6,15 +6,20 @@
 }
 
 .content {
-  width: 70%;
+  width: 75%;
   padding: 50px 0;
   margin: auto;
 }
 
 .about h2 {
-  font-size: 2rem;
+  font-size: 4rem;
+  font-weight: 400;
+  font-family: "Markazi Text";
 }
 
 .about .about-text {
   font-size: 1.5rem;
+}
+.about a {
+  color: rgb(255, 208, 0);
 }

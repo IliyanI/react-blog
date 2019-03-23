@@ -8,15 +8,9 @@ class About extends Component {
         <div className="content">
           <h2>About</h2>
           <div className="about-text">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum.
+            Blogify is a React project inpired by{" "}
+            <a href="www.medium.com">Medium.com</a>. You can see the source code
+            at my <a href="https://github.com/IliyanI/react-blog">Github</a>
           </div>
         </div>
       </div>

@@ -1,10 +1,22 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 
-export default class Footer extends Component {
+class Footer extends Component {
   render() {
+    const divStyle = {};
+    if (
+      this.props.location.pathname === "/login" ||
+      this.props.location.pathname === "/register"
+    ) {
+      divStyle.position = "absolute";
+    } else {
+      divStyle.position = "relative";
+    }
     return (
-      <div className="footer">
-        <p className="icon">Blogify</p>
+      <div className="footer" style={divStyle}>
+        <p className="icon">
+          <span>B</span>logify
+        </p>
         <p className="links">
           <a href="help">Help</a>
           <a href="terms">Terms of Service</a>
@@ -13,3 +25,5 @@ export default class Footer extends Component {
     );
   }
 }
+
+export default withRouter(Footer);

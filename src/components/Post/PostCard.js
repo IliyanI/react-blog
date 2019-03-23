@@ -25,24 +25,15 @@ class PostCard extends Component {
     const date = new Date(this.props.dateCreated);
     const dateCreated = monthNames[date.getMonth()] + " " + date.getDate();
 
+    const imageUrl = this.props.imageUrl;
+
     return (
-      // "https://storage.googleapis.com/chydlx/codepen/blog-cards/image-2.jpg"
-      // <Link to={"/post/" + this.props._id} onClick={this.handleClick}>
-      //   <div className="post-preview">
-      //     <p className="title">{this.props.title}</p>
-      //     <p className="author">Author {this.props.author}</p>
-      //     <span className="type">Type {this.props.type}</span>
-      //     <span className="read-time">
-      //       Estimate read time: {this.props.readTime} min
-      //     </span>
-      //   </div>
-      // </Link>
       <div className={this.props.alt ? "blog-card alt" : "blog-card"}>
         <div className="meta">
           <div
             className="photo"
             style={{
-              backgroundImage: "url(" + "https://i.imgur.com/99j3fq5.gif" + ")"
+              backgroundImage: "url(" + imageUrl + ")"
             }}
           />
           <ul className="details">
@@ -54,22 +45,6 @@ class PostCard extends Component {
                 {dateCreated} &#8226; {this.props.readTime} min read
               </p>
             </li>
-            {/* <li className="tags">
-              <ul>
-                <li>
-                  <a href="#">{this.props.type}</a>
-                </li>
-                <li>
-                  <a href="#">Code</a>
-                </li>
-                <li>
-                  <a href="#">HTML</a>
-                </li>
-                <li>
-                  <a href="#">CSS</a>
-                </li>
-              </ul>
-            </li> */}
           </ul>
         </div>
         <div className="description">

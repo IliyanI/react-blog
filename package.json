@@ -3,16 +3,25 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "medium-editor": "^5.23.3",
+    "@emotion/core": "^10.0.9",
+    "@emotion/styled": "^10.0.9",
+    "immutable": "^4.0.0-rc.12",
+    "is-hotkey": "^0.1.4",
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
+    "react-emotion": "^10.0.0",
+    "react-icons-kit": "^1.2.1",
+    "react-immutable-proptypes": "^2.1.0",
     "react-redux": "^6.0.0",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.5",
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6",
     "redux-promise-middleware": "^6.1.0",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "slate": "^0.44.12",
+    "slate-html-serializer": "^0.7.36",
+    "slate-react": "^0.21.18"
   },
   "scripts": {
     "start": "react-scripts start",

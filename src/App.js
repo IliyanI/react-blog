@@ -15,23 +15,23 @@ import ProfilePage from "./components/user-components/ProfilePage";
 import Notification from "./components/notification/Notification.js";
 import About from "./components/About/About";
 import "./components/About/About.css";
+import PrivateRoute from "./HOCs/PrivateRoute";
 
 class App extends Component {
   render() {
-    console.log(
-      this.props.location.pathname === "/" &&
-        !sessionStorage.getItem("user_token")
-    );
+    console.log(this.props.location.pathname);
     return (
       <React.Fragment>
-        <header>
-          <div className="container">
-            <div className="header-content">
-              <h1>-Do Work That Matters-</h1>
-              <h3>You'll never regret it.</h3>
+        {this.props.location.pathname === "/" && (
+          <header>
+            <div className="container">
+              <div className="header-content">
+                <h1>-Blogify-</h1>
+                <h3>Be yourself, everyone else is already taken.</h3>
+              </div>
             </div>
-          </div>
-        </header>
+          </header>
+        )}
 
         <Navigation />
 
@@ -45,6 +45,7 @@ class App extends Component {
 
         <div className="container">
           <Switch>
+            <PrivateRoute exact path="/protected" component={Register} />
             <Route path="/post/edit/:id" component={PostForm} />
             <Route path="/user/profile" component={ProfilePage} />
             <Route path="/post/create" component={PostForm} />
@@ -59,7 +60,7 @@ class App extends Component {
           </Switch>
         </div>
 
-        <Footer />
+        {/* <Footer /> */}
       </React.Fragment>
     );
   }

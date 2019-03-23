@@ -1,6 +1,6 @@
 import remote from "../../helpers/remote";
-const ALL_POSTS_ENDPOINT = "http://localhost:5000/post/all";
-const USER_POSTS_ENDPOINT = "http://localhost:5000/user/data";
+import serverEndpoints from "../../helpers/serverEndpoints";
+const { ALL_POSTS_ENDPOINT, USER_POSTS_ENDPOINT } = serverEndpoints;
 
 export default dispatch => {
   return {
