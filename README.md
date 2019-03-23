@@ -1,3 +1,3 @@
-##Blogify
+## Blogify
 
-A site I made for a React exam inspired by Medium.com.
+A site I made for a React exam inspired by [Medium.com](https://medium.com).
