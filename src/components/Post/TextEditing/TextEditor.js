@@ -1,5 +1,9 @@
 /* eslint-disable default-case */
 import React, { Component, Fragment } from "react";
+import { Redirect, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import postActions from "../../../redux/actions/postActions";
+
 import { Editor } from "slate-react";
 import { Value } from "slate";
 
@@ -95,9 +99,6 @@ const rules = [
 ];
 
 const html = new Html({ rules });
-const existingValue =
-  sessionStorage.getItem("content") || "<p>Your post content goes here</p>";
-const initialValue = Value.fromJSON(html.deserialize(existingValue));
 
 const DEFAULT_NODE = "paragraph";
 
@@ -107,9 +108,20 @@ const isUnderlinedHotkey = isKeyHotkey("mod+u");
 const isCodeHotkey = isKeyHotkey("mod+`");
 
 class TextEditor extends React.Component {
-  state = {
-    value: initialValue
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: Value.fromJSON(
+        html.deserialize(
+          props.post
+            ? props.post.content
+            : false || "<p>Your post content goes here</p>"
+        )
+      ),
+      redirect: false,
+      route: "/publish/create"
+    };
+  }
 
   hasMark = type => {
     const { value } = this.state;
@@ -127,13 +139,21 @@ class TextEditor extends React.Component {
 
   onPublish = () => {
     const { value } = this.state;
-
     const content = html.serialize(value);
+    this.props.setPostContent(content);
 
-    this.props.onPublish(content);
+    const path =
+      this.props.location.pathname.indexOf("edit") > -1
+        ? "/publish/edit"
+        : "/publish/create";
+    this.setState({ redirect: true, route: path });
   };
 
   render() {
+    const { redirect, route } = this.state;
+    if (redirect) {
+      return <Redirect to={route} />;
+    }
     return (
       <div>
         <div className="publish">
@@ -314,4 +334,19 @@ class TextEditor extends React.Component {
   };
 }
 
-export default TextEditor;
+const mapStateToProps = state => {
+  return {
+    post: state.posts.postData
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return postActions(dispatch);
+};
+
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(TextEditor)
+);

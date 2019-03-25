@@ -1,11 +1,17 @@
+//dependencies
 import React, { Component, Fragment } from "react";
-import CommentArea from "../user-components/CommentArea";
-import remote from "../../helpers/remote";
 import { Redirect, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import notificationActions from "../../redux/actions/notificationActions";
-import serverEndpoints from "../../helpers/serverEndpoints";
+
+//other components
+import CommentArea from "../user-components/CommentArea";
 import Loading from "../Loading";
+
+//redux
+import notificationActions from "../../redux/actions/notificationActions";
+import postActions from "../../redux/actions/postActions";
+
+//styles
 import "./PostScreen.css";
 
 class PostScreen extends Component {
@@ -18,51 +24,34 @@ class PostScreen extends Component {
   };
 
   componentDidMount() {
-    remote
-      .get(serverEndpoints.POST_GET + this.props.match.params.id)
-      .then(data => data.json())
-      .then(data => {
-        this.setState({
-          loading: false,
-          post: {
-            ...data,
-            content: decodeURI(data.content)
-          }
-        });
-      });
+    this.props.postActions.getPost(this.props.match.params.id);
   }
 
   handleLike = e => {
     e.preventDefault();
-    const likes = this.state.post.likes + 1;
-    this.setState({ post: { ...this.state.post, likes: likes } });
-    remote.post(serverEndpoints.POST_LIKE + this.state.post._id);
+
+    this.props.postActions.likePost(this.props.post._id);
   };
 
   handleDelete = () => {
-    remote
-      .delete(serverEndpoints.POST_DELETE + this.state.post._id)
-      .then(data => data.json())
-      .then(data => {
-        if (data.success) {
-          this.props.notifySuccess(data.message);
-          this.setState({ redirect: true, route: "/" });
-        } else {
-          this.props.notifyError(data.message);  
-        }
-      });
+    this.props.postActions.deletePost(this.props.post._id);
   };
 
   handleEdit = () => {
     this.setState({
       redirect: true,
-      route: "/post/edit/" + this.state.post._id
+      route: "/post/edit/" + this.props.post._id
     });
   };
 
-  isAuthor = () => {
-    if (sessionStorage.getItem("username") === this.state.post.author)
-      return true;
+  isAuthedToEditDelete = () => {
+    const username = this.props.user.userData
+      ? this.props.user.userData.username
+      : "";
+    const admin =
+      this.props.user.userData &&
+      this.props.user.userData.roles.indexOf("Admin") > -1;
+    if (username === this.state.post.author || admin) return true;
     return false;
   };
 
@@ -71,6 +60,10 @@ class PostScreen extends Component {
   };
 
   render() {
+    if (!this.props.post) {
+      return <div>Post loading.</div>;
+    }
+
     const {
       title,
       description,
@@ -79,8 +72,11 @@ class PostScreen extends Component {
       readTime,
       likes,
       _id,
-      comments
-    } = this.state.post;
+      comments,
+      dateCreated
+    } = this.props.post;
+
+    console.log(this.props.post);
 
     const monthNames = [
       "Jan",
@@ -97,19 +93,20 @@ class PostScreen extends Component {
       "Dec"
     ];
 
-    const date = new Date(this.state.post.dateCreated);
-    const dateCreated = monthNames[date.getMonth()] + " " + date.getDate();
+    const date = new Date(dateCreated);
+    const dateDisplay = monthNames[date.getMonth()] + " " + date.getDate();
+
     if (this.state.redirect) {
       return <Redirect to={this.state.route} />;
     }
+
     return (
       <React.Fragment>
         {this.state.loading && <Loading />}
         <div className="post-screen">
           <h1>{title}</h1>
           <h3>{description}</h3>
-          {this.isAuthor() ||
-          sessionStorage.getItem("user_role") === "Admin" ? (
+          {this.isAuthedToEditDelete() ? (
             <Fragment>
               <button className="edit-post" onClick={this.handleEdit}>
                 Edit
@@ -128,16 +125,15 @@ class PostScreen extends Component {
           </p>
 
           <p className="read-time">
-            {dateCreated} &#8226; {readTime} min read.
+            {dateDisplay} &#8226; {readTime} min read.
           </p>
 
           <div
             className="content"
             dangerouslySetInnerHTML={{ __html: content }}
-          >
-            {/* {content && content.map(el => el)} */}
-          </div>
+          />
           <div className="like-button">
+            {/* this need to be a button */}
             <a href="#" onClick={this.handleLike}>
               &#x1f44d; {likes} likes.
             </a>
@@ -149,13 +145,23 @@ class PostScreen extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    post: state.posts.postData,
+    user: state.user
+  };
+};
+
 const mapDispatchToProps = dispatch => {
-  return notificationActions(dispatch);
+  return {
+    notificationActions: notificationActions(dispatch),
+    postActions: postActions(dispatch)
+  };
 };
 
 export default withRouter(
   connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
   )(PostScreen)
 );

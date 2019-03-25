@@ -20,6 +20,7 @@ class Register extends Component {
   }
 
   validateInput = (name, value) => {
+    //fix this goddamn monster
     const { username, email, password, repeatPassword } = this.state.form;
     const { errorMessage } = this.state;
 

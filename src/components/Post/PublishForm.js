@@ -1,20 +1,17 @@
 import React, { Component } from "react";
-import remote from "../../helpers/remote";
-import serverEndpoints from "../../helpers/serverEndpoints";
-import notificationActions from "../../redux/actions/notificationActions";
 import { Redirect, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
-const { POST_CREATE, POST_EDIT } = serverEndpoints;
-
+import notificationActions from "../../redux/actions/notificationActions";
+import postActions from "../../redux/actions/postActions";
 class PublishForm extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      form: props.form,
+      form: { ...props.post.postData },
       redirect: false,
-      mode: props.mode
+      mode: props.location.pathname.indexOf("edit") > -1 ? "edit" : "create"
     };
   }
 
@@ -22,45 +19,22 @@ class PublishForm extends Component {
     event.preventDefault();
 
     const form = this.state.form;
-    form.content = encodeURI(this.props.content);
+    form.content = encodeURI(form.content);
+
+    const editForm = { ...form, postId: this.props.match.params.id };
+    let createForm = {
+      ...form,
+      author: this.props.user.username,
+      id: this.props.user._id
+    };
 
     if (this.state.mode === "create") {
-      let post = {
-        ...form,
-        author: sessionStorage.getItem("username"),
-        id: sessionStorage.getItem("user_id")
-      };
-
-      const image = this.state.image;
-
-      remote
-        .post(POST_CREATE, post, image)
-        .then(data => {
-          this.setState({ redirect: true });
-          this.props.notifySuccess("Post made successfuly!");
-          sessionStorage.removeItem("content");
-        })
-        .catch(err => {
-          console.log(err);
-          this.props.notifyError("Something went wrong!");
-        });
+      this.props.postActions.createPost(createForm);
     } else {
-      remote
-        .post(POST_EDIT, { ...form, postId: this.props.match.params.id })
-        .then(data => data.json())
-        .then(data => {
-          if (data.success) {
-            this.setState({ redirect: true });
-            this.props.notifySuccess("Post edited successfuly!");
-          } else {
-            this.props.notifyError(data.message);
-          }
-        })
-        .catch(err => {
-          console.log(err);
-          this.props.notifyError("Something went wrong!");
-        });
+      this.props.postActions.editPost(editForm);
     }
+
+    this.props.postActions.flushPostData();
   };
 
   inputValidator = (name, value) => {};
@@ -75,6 +49,18 @@ class PublishForm extends Component {
   };
 
   render() {
+    // const editSuccess = this.props.post.edit
+    //   ? this.props.post.edit.success
+    //   : false;
+
+    // const createSuccess = this.props.post.create
+    //   ? this.props.post.edit.success
+    //   : false;
+
+    // if (editSuccess || createSuccess) {
+    //   this.setState({ redirect: true });
+    // }
+
     if (this.state.redirect) {
       return <Redirect to="/" />;
     }
@@ -145,13 +131,23 @@ class PublishForm extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    user: state.user.userData,
+    post: state.posts
+  };
+};
+
 const mapDispatchToProps = dispatch => {
-  return notificationActions(dispatch);
+  return {
+    notificationActions: notificationActions(dispatch),
+    postActions: postActions(dispatch)
+  };
 };
 
 export default withRouter(
   connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
   )(PublishForm)
 );

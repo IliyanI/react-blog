@@ -6,7 +6,7 @@ import Navigation from "./components/Navigation/Navigation";
 import Footer from "./components/Footer";
 import Feed from "./components/Feed/Feed";
 import "./components/Feed/Feed.css";
-import PostForm from "./components/Post/PostForm";
+import TextEditor from "./components/Post/TextEditing/TextEditor";
 import Register from "./components/user-components/Register";
 import Login from "./components/user-components/Login";
 import NotFound from "./components/NotFound";
@@ -14,8 +14,9 @@ import PostScreen from "./components/Post/PostScreen";
 import ProfilePage from "./components/user-components/ProfilePage";
 import Notification from "./components/notification/Notification.js";
 import About from "./components/About/About";
-import "./components/About/About.css";
 import PrivateRoute from "./HOCs/PrivateRoute";
+import "./components/About/About.css";
+import PublishForm from "./components/Post/PublishForm";
 
 class App extends Component {
   render() {
@@ -46,9 +47,13 @@ class App extends Component {
         <div className="container">
           <Switch>
             <PrivateRoute exact path="/protected" component={Register} />
-            <Route path="/post/edit/:id" component={PostForm} />
+            <Route path="/post/edit/:id" component={TextEditor} />
+            {/* check for react route url options */}
+            <Route path="/publish/edit" component={PublishForm} />
+            <Route path="/publish/create" component={PublishForm} />
+
             <Route path="/user/profile" component={ProfilePage} />
-            <Route path="/post/create" component={PostForm} />
+            <Route path="/post/create" component={TextEditor} />
             <Route
               path="/post/:id"
               render={() => <PostScreen {...this.props.posts.selectedPost} />}

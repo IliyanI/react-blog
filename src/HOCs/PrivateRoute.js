@@ -28,7 +28,7 @@ const PrivateRoute = ({ WrappedComponent, ...props }) => {
 const mapStateToProps = (state, ownProps) => {
   return {
     user: state.user,
-    path: ownProps.location,
+    ownProps: ownProps,
     WrappedComponent: ownProps.component
   };
 };
