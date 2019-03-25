@@ -76,8 +76,6 @@ class PostScreen extends Component {
       dateCreated
     } = this.props.post;
 
-    console.log(this.props.post);
-
     const monthNames = [
       "Jan",
       "Feb",
