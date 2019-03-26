@@ -58,6 +58,15 @@ function postReducer(
         }
       };
       break;
+    case "CREATE_COMMENT_FULFILLED":
+      state = {
+        ...state,
+        postData: {
+          ...state.postData,
+          comments: [action.payload.comment, ...state.postData.comments]
+        }
+      };
+      break;
     case "SET_SELECTED_POST":
       state = {
         ...state,

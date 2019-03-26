@@ -7,7 +7,8 @@ const {
   POST_DELETE,
   POST_LIKE,
   POST_CREATE,
-  POST_EDIT
+  POST_EDIT,
+  COMMENT_CREATE
 } = serverEndpoints;
 
 export default dispatch => {
@@ -128,6 +129,18 @@ export default dispatch => {
     flushPostData: () => {
       dispatch({
         type: "FLUSH_POST_DATA"
+      });
+    },
+    createComment: comment => {
+      dispatch({
+        type: "CREATE_COMMENT",
+        payload: new Promise((res, rej) => {
+          remote
+            .post(COMMENT_CREATE, comment)
+            .then(data => data.json())
+            .then(data => res(data))
+            .catch(err => console.log(err));
+        })
       });
     }
   };

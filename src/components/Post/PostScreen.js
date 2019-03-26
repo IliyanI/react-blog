@@ -125,7 +125,7 @@ class PostScreen extends Component {
           <p className="read-time">
             {dateDisplay} &#8226; {readTime} min read.
           </p>
-
+          {/* might be a security risk? */}
           <div
             className="content"
             dangerouslySetInnerHTML={{ __html: content }}
