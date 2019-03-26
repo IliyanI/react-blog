@@ -5,9 +5,10 @@ Haven't put any effort in the server part so it's not secure, nor good looking.
 
 ## Todo
 
+- [ ] Add protected routes
 - [ ] Fix notifications
 - [ ] Remove busines logic from components
-- [ ] Add more functionality TextEditor
+- [ ] Add more functionality to TextEditor
 - [ ] Add profile images
 - [ ] Fix minor design bugs
 - [ ] Make design responsive and a mobile version
