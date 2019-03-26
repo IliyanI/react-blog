@@ -52,8 +52,8 @@ class CommentArea extends Component {
                 className="comment-textarea-content"
                 onChange={this.handleTextArea}
               />
-              <span class="label">Leave a respone here</span>
-              <span class="border" />
+              <span className="label">Leave a respone here</span>
+              <span className="border" />
             </div>
             <div className="break" />
             <a href="#" onClick={this.handleComment}>
@@ -61,7 +61,10 @@ class CommentArea extends Component {
             </a>
           </div>
           <div className="comments">
-            {comments && comments.map(comment => <Comment {...comment} />)}
+            {comments &&
+              comments.map(comment => (
+                <Comment key={comment._id} {...comment} />
+              ))}
           </div>
         </div>
       </div>
